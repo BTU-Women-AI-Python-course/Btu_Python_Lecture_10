@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -33,3 +35,9 @@ class Product(models.Model):
         verbose_name = _('Product')
         verbose_name_plural = _('Products')
         ordering = ['-id']
+
+
+    def get_price(self, quantity: int, discount: Decimal = Decimal(0)) -> Decimal:
+        price = self.price * quantity
+        price = (price * (100 - discount))/100
+        return price
