@@ -11,14 +11,14 @@ class Product(models.Model):
         on_delete=models.PROTECT,
         null=True
     )
-    category = models.ManyToManyField(
+    categories = models.ManyToManyField(
         to='product.Category',
-        verbose_name=_("Category"),
+        verbose_name=_("Categories"),
         blank=True
     )
-    tag = models.ManyToManyField(
+    tags = models.ManyToManyField(
         to='product.Tag',
-        verbose_name=_("Tag"),
+        verbose_name=_("Tags"),
         blank=True
     )
     title = models.CharField(verbose_name=_('Title'), max_length=255)
@@ -41,3 +41,12 @@ class Product(models.Model):
         price = self.price * quantity
         price = (price * (100 - discount))/100
         return price
+
+    @property
+    def tag_titles(self):
+        tags = self.tags.values_list('title', flat=True)
+        tag_titles = "Tag titles: "
+        for tag in list(tags)[:-1]:
+            tag_titles += f"{tag}, "
+        tag_titles += f"{list(tags)[-1]}"
+        return tag_titles
