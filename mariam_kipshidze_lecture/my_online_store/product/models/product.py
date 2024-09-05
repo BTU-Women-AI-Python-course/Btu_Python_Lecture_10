@@ -2,7 +2,15 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
+
+
 class Product(models.Model):
+    brand = models.ForeignKey(
+        to='product.Brand',
+        verbose_name=_("Brand"),
+        on_delete=models.PROTECT,
+        null=True
+    )
     title = models.CharField(verbose_name=_('Title'), max_length=255)
     price = models.DecimalField(verbose_name=_('Price'), max_digits=5, decimal_places=2)
     description = models.TextField(verbose_name=_('Description'), blank=True, null=True)
